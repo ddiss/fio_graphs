@@ -29,6 +29,7 @@ def get_arg_parser():
                    help='Generate graphs in SVG format only')
     p.add_argument('-p', '--png', action="store_true", default=False,
                    help='Generate graphs in PNG format only')
+    p.add_argument('--title-prefix', help='Graph title prefix')
     return p
 
 
@@ -241,8 +242,9 @@ class FioResults(object):
         bar1 = plt.bar(ind, b1_data, self.b_width, color=colors1)
         bar2 = plt.bar(ind, b2_data, self.b_width, bottom=b1_data,
                        color=colors2)
-        plt.title('Aggregated bandwidth over {} clients'.format(
-            self.num_clients))
+        plt.title('{}ggregate bandwidth over {} clients'.format(
+               self.args.title_prefix + " a" if self.args.title_prefix else "A",
+               self.num_clients))
         # adjust xscale if stacked is > 1000000 or so
         plt.xticks(ind, dframe.name, rotation=-45, ha='left',
                    rotation_mode='anchor')
@@ -297,8 +299,9 @@ class FioResults(object):
         bar1 = plt.bar(ind, b1_data, self.b_width, color=colors1)
         bar2 = plt.bar(ind, b2_data, self.b_width, bottom=b1_data,
                        color=colors2)
-        plt.title('Aggregated IOPS over {} clients'.format(
-            self.num_clients))
+        plt.title('{}ggregate IOPS over {} clients'.format(
+               self.args.title_prefix + " a" if self.args.title_prefix else "A",
+               self.num_clients))
         plt.yscale('log')
         # adjust xscale if stacked is > 1000000 or so
         plt.xticks(ind, dframe.name, rotation=-45, ha='left',
@@ -324,8 +327,9 @@ class FioResults(object):
         plt.xlabel('Completion latency bucket [μs]')
 
 
-        plt.title('Aggregated latency distribution over {} clients'.format(
-            self.num_clients))
+        plt.title('{}ggregate latency distribution over {} clients'.format(
+               self.args.title_prefix + " a" if self.args.title_prefix else "A",
+               self.num_clients))
         def strip_fct (e):
             if not e[0].isdigit():
                 return int(e.lstrip('>=')) + 1
